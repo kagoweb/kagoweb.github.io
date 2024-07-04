@@ -5,8 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>KAGO</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="mediaqueries.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
     <link rel="icon" type="image/png" href="./assets/pic10.png">
     <style>
       body {
@@ -15,34 +14,48 @@
         align-items: center;
         height: 100vh;
         margin: 0;
-        font-family: Arial, sans-serif;
-        background-color: #f8f9fa;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
       }
       .maintenance-container {
         text-align: center;
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        background-color: #fff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        background-color: #ffffff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         width: 90%;
-        max-width: 600px;
+        max-width: 500px;
       }
       h1 {
-        margin-bottom: 10px;
-        color: #333;
+        margin-bottom: 15px;
+        color: #333333;
+        font-size: 28px;
+        font-weight: 700;
       }
       p {
-        color: #555;
+        color: #666666;
+        font-size: 18px;
+        line-height: 1.5;
       }
       .contact {
+        display: inline-block;
         margin-top: 20px;
-        color: #007bff;
+        color: #ffffff;
+        background-color: rgba(0, 123, 255, 0.8);
+        padding: 10px 20px;
+        border-radius: 5px;
         text-decoration: none;
+        font-size: 16px;
+        transition: background-color 0.3s ease, opacity 0.3s ease;
+      }
+      .contact:hover {
+        background-color: rgba(0, 86, 179, 0.8);
+        opacity: 0.9;
       }
       @media (max-width: 600px) {
         .maintenance-container {
-          padding: 15px;
+          padding: 20px;
           width: 95%;
         }
         h1 {
@@ -51,14 +64,34 @@
         p {
           font-size: 16px;
         }
+        .contact {
+          font-size: 14px;
+        }
       }
     </style>
   </head>
   <body>
     <div class="maintenance-container">
-      <h1>Web Sedang Dalam Perbaikan</h1>
-      <p>Mohon maaf atas ketidaknyamanannya. Kami akan segera kembali.</p> <br>
+      <h1 id="greeting">Web Sedang Dalam Perbaikan</h1>
+      <p> Situs ini sedang dalam perbaikan. Mohon maaf atas ketidaknyamanannya, kami akan segera kembali.</p>
       <a href="mailto:fafanofficialyt@gmail.com" class="contact">Hubungi kami melalui email</a>
     </div>
+    <script>
+      function getGreeting() {
+        const now = new Date();
+        const hour = now.getHours();
+        let greeting;
+        if (hour < 12) {
+          greeting = "Selamat pagi";
+        } else if (hour < 18) {
+          greeting = "Hai, Selamat siang!";
+        } else {
+          greeting = "Selamat malam";
+        }
+        return greeting;
+      }
+
+      document.getElementById("greeting").textContent = getGreeting();
+    </script>
   </body>
 </html>
