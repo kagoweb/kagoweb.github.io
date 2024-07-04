@@ -73,20 +73,22 @@
   <body>
     <div class="maintenance-container">
       <h1 id="greeting">Web Sedang Dalam Perbaikan</h1>
-      <p> Situs ini sedang dalam perbaikan. Mohon maaf atas ketidaknyamanannya, kami akan segera kembali.</p>
+      <p>Situs ini sedang dalam perbaikan. Mohon maaf atas ketidaknyamanannya, kami akan segera kembali.</p>
       <a href="mailto:fafanofficialyt@gmail.com" class="contact">Hubungi kami melalui email</a>
+      <footer style="margin-top: 20px; font-size: 12px; color: #666666;">&copy; 2024 Mafazan. All rights reserved.</footer>
     </div>
+    
     <script>
       function getGreeting() {
         const now = new Date();
         const hour = now.getHours();
         let greeting;
         if (hour < 12) {
-          greeting = "Selamat pagi";
+          greeting = "Hai, Selamat pagi";
         } else if (hour < 18) {
           greeting = "Hai, Selamat siang!";
         } else {
-          greeting = "Selamat malam";
+          greeting = "Hai, Selamat malam";
         }
         return greeting;
       }
