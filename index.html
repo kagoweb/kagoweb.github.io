@@ -1,99 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>KAGO</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
-    <link rel="icon" type="image/png" href="./assets/pic10.png">
-    <style>
-      body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        font-family: 'Poppins', sans-serif;
-        background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
-      }
-      .maintenance-container {
-        text-align: center;
-        padding: 30px;
-        border: 1px solid #e0e0e0;
-        border-radius: 10px;
-        background-color: #ffffff;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        width: 90%;
-        max-width: 500px;
-      }
-      h1 {
-        margin-bottom: 15px;
-        color: #333333;
-        font-size: 28px;
-        font-weight: 700;
-      }
-      p {
-        color: #666666;
-        font-size: 18px;
-        line-height: 1.5;
-      }
-      .contact {
-        display: inline-block;
-        margin-top: 20px;
-        color: #ffffff;
-        background-color: rgba(0, 123, 255, 0.8);
-        padding: 10px 20px;
-        border-radius: 5px;
-        text-decoration: none;
-        font-size: 16px;
-        transition: background-color 0.3s ease, opacity 0.3s ease;
-      }
-      .contact:hover {
-        background-color: rgba(0, 86, 179, 0.8);
-        opacity: 0.9;
-      }
-      @media (max-width: 600px) {
-        .maintenance-container {
-          padding: 20px;
-          width: 95%;
-        }
-        h1 {
-          font-size: 24px;
-        }
-        p {
-          font-size: 16px;
-        }
-        .contact {
-          font-size: 14px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="maintenance-container">
-      <h1 id="greeting">Web Sedang Dalam Perbaikan</h1>
-      <p>Situs ini sedang dalam perbaikan. Mohon maaf atas ketidaknyamanannya, kami akan segera kembali.</p>
-      <a href="mailto:fafanofficialyt@gmail.com" class="contact">Hubungi kami melalui email</a>
-      <footer style="margin-top: 20px; font-size: 12px; color: #666666;">&copy; 2024 Mafazan. All rights reserved.</footer>
-    </div>
-    
-    <script>
-      function getGreeting() {
-        const now = new Date();
-        const hour = now.getHours();
-        let greeting;
-        if (hour < 12) {
-          greeting = "Hai, Selamat pagi";
-        } else if (hour < 18) {
-          greeting = "Hai, Selamat siang!";
-        } else {
-          greeting = "Hai, Selamat malam";
-        }
-        return greeting;
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>kagofrog</title>
+  
+  <!-- Menambahkan ikon web (favicon) -->
+  <link rel="icon" href="frog.png" type="image/png">
 
-      document.getElementById("greeting").textContent = getGreeting();
-    </script>
-  </body>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #02604f 0%, #00082c 100%);
+      overflow: hidden;
+      flex-direction: column;
+    }
+
+    canvas {
+      background-color: #87CEEB;
+      display: block;
+      border: 3px solid #000;
+      cursor: none; /* Menyembunyikan kursor */
+    }
+
+    .info {
+      position: absolute;
+      top: 10px;
+      text-align: center;
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    #message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 30px;
+      font-weight: bold;
+      color: #FF6347;
+      display: none;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      color: #fff;
+      font-size: 16px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .footer a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .footer a:hover {
+      color: #00ea33;
+    }
+  </style>
+</head>
+<body>
+  <div class="info">
+    <h1>KAGO FROG</h1>
+    <p> </p>
+    <p>Score: <span id="score">0</span></p>
+  </div>
+  <div id="message">AKU SUDAH BESAR</div>
+  <canvas id="gameCanvas" width="500" height="400"></canvas>
+
+  <div class="footer">
+    <p>Follow me on Instagram <a href="https://www.instagram.com/fafankagomi" target="_blank">@fafankagomi</a></p>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // Ukuran kodok dan serangga
+    const frogSize = 40;
+    const bugSize = 20;
+
+    let score = 0;
+    let frogScale = 1; // Faktor skala untuk kodok
+    let bug = createBug();
+    const frog = { x: canvas.width / 2, y: canvas.height / 2 }; // Posisi awal kodok
+
+    // Muat gambar kodok
+    const frogImage = new Image();
+    frogImage.src = "frog.png"; // Pastikan file gambar kodok berada di folder yang sama
+
+    // Update posisi kodok sesuai pergerakan mouse
+    canvas.addEventListener("mousemove", (event) => {
+      const rect = canvas.getBoundingClientRect();
+      frog.x = event.clientX - rect.left - (frogSize * frogScale) / 2;
+      frog.y = event.clientY - rect.top - (frogSize * frogScale) / 2;
+    });
+
+    function createBug() {
+      return {
+        x: Math.random() * (canvas.width - bugSize),
+        y: Math.random() * (canvas.height - bugSize),
+      };
+    }
+
+    function drawFrog() {
+      ctx.drawImage(frogImage, frog.x, frog.y, frogSize * frogScale, frogSize * frogScale); // Menggambar kodok dengan skala
+    }
+
+    function drawBug() {
+      ctx.fillStyle = "red";
+      ctx.fillRect(bug.x, bug.y, bugSize, bugSize);
+    }
+
+    function checkCollision() {
+      if (
+        frog.x < bug.x + bugSize &&
+        frog.x + frogSize * frogScale > bug.x &&
+        frog.y < bug.y + bugSize &&
+        frog.y + frogSize * frogScale > bug.y
+      ) {
+        score++;
+        document.getElementById("score").textContent = score;
+        bug = createBug();
+
+        // Menambah ukuran kodok setiap kali makan serangga
+        frogScale += 0.1;
+
+        // Menampilkan pesan "Saya sudah besar!" jika skor mencapai 100
+        if (score >= 100) {
+          document.getElementById("message").style.display = "block";
+        }
+      }
+    }
+
+    function drawGame() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawFrog();
+      drawBug();
+      checkCollision();
+    }
+
+    // Jalankan game loop setelah gambar kodok dimuat
+    frogImage.onload = function() {
+      setInterval(drawGame, 20);
+    };
+  </script>
+</body>
 </html>
