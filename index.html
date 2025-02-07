@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>kagofrog</title>
   
-  <!-- Menambahkan ikon web (favicon) -->
   <link rel="icon" href="frog.png" type="image/png">
 
   <style>
@@ -25,7 +24,7 @@
       background-color: #87CEEB;
       display: block;
       border: 3px solid #000;
-      cursor: none; /* Menyembunyikan kursor */
+      cursor: none;
     }
 
     .info {
@@ -35,21 +34,6 @@
       color: #fff;
       font-size: 18px;
       font-weight: bold;
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #28a745;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #218838;
     }
 
     #message {
@@ -81,16 +65,35 @@
     .footer a:hover {
       color: #00ea33;
     }
+
+    #toggleMusic {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 8px 15px;
+      font-size: 14px;
+      background-color: black;
+      color: white;
+      border: 2px solid white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #toggleMusic:hover {
+      background-color: white;
+      color: black;
+    }
   </style>
 </head>
 <body>
   <div class="info">
     <h1>KAGO FROG</h1>
-    <p> </p>
     <p>Score: <span id="score">0</span></p>
   </div>
   <div id="message">AKU SUDAH BESAR</div>
   <canvas id="gameCanvas" width="500" height="400"></canvas>
+
+  <button id="toggleMusic">Music On</button>
 
   <div class="footer">
     <p>Follow me on Instagram <a href="https://www.instagram.com/fafankagomi" target="_blank">@fafankagomi</a></p>
@@ -100,20 +103,41 @@
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
 
-    // Ukuran kodok dan serangga
     const frogSize = 40;
     const bugSize = 20;
-
     let score = 0;
-    let frogScale = 1; // Faktor skala untuk kodok
+    let frogScale = 1;
     let bug = createBug();
-    const frog = { x: canvas.width / 2, y: canvas.height / 2 }; // Posisi awal kodok
+    const frog = { x: canvas.width / 2, y: canvas.height / 2 };
 
-    // Muat gambar kodok
     const frogImage = new Image();
-    frogImage.src = "frog.png"; // Pastikan file gambar kodok berada di folder yang sama
+    frogImage.src = "frog.png";
 
-    // Update posisi kodok sesuai pergerakan mouse
+    const eatSound = new Audio("eat.mp3");
+    eatSound.volume = 0.2;
+
+    const winSound = new Audio("woaa.mp3");
+    winSound.volume = 0.5;
+
+    let bgMusic = null;
+    let musicPlaying = false;
+
+    document.getElementById("toggleMusic").addEventListener("click", function() {
+      if (!musicPlaying) {
+        if (!bgMusic) {
+          bgMusic = new Audio("madu.mp3");
+          bgMusic.loop = true;
+        }
+        bgMusic.currentTime = 0;
+        bgMusic.play();
+        this.textContent = "Music Off";
+      } else {
+        bgMusic.pause();
+        this.textContent = "Music On";
+      }
+      musicPlaying = !musicPlaying;
+    });
+
     canvas.addEventListener("mousemove", (event) => {
       const rect = canvas.getBoundingClientRect();
       frog.x = event.clientX - rect.left - (frogSize * frogScale) / 2;
@@ -128,7 +152,7 @@
     }
 
     function drawFrog() {
-      ctx.drawImage(frogImage, frog.x, frog.y, frogSize * frogScale, frogSize * frogScale); // Menggambar kodok dengan skala
+      ctx.drawImage(frogImage, frog.x, frog.y, frogSize * frogScale, frogSize * frogScale);
     }
 
     function drawBug() {
@@ -146,12 +170,15 @@
         score++;
         document.getElementById("score").textContent = score;
         bug = createBug();
-
-        // Menambah ukuran kodok setiap kali makan serangga
         frogScale += 0.1;
 
-        // Menampilkan pesan "Saya sudah besar!" jika skor mencapai 100
-        if (score >= 100) {
+        if (score < 100) {
+          eatSound.currentTime = 0;
+          eatSound.play();
+        }
+
+        if (score === 100) {
+          winSound.play();
           document.getElementById("message").style.display = "block";
         }
       }
@@ -164,7 +191,6 @@
       checkCollision();
     }
 
-    // Jalankan game loop setelah gambar kodok dimuat
     frogImage.onload = function() {
       setInterval(drawGame, 20);
     };
